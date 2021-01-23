@@ -41,4 +41,16 @@ class Product
 
         return $product->hidden(['summary']);
     }
+
+    public function getOne($id)
+    {
+        (new IDMustBePostiveInt())->goCheck();
+        $product = ProductModel::getProductDetail($id);
+
+        if($product->isEmpty()){
+            throw new ProductException();
+        }
+
+        return $product;
+    }
 }

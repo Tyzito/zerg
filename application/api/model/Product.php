@@ -19,6 +19,16 @@ class Product extends BaseModel
         return $this->prefixImgUrl($value, $data);
     }
 
+    public function imgs()
+    {
+        return $this->hasMany(ProductImage::class, 'product_id', 'id');
+    }
+
+    public function properties()
+    {
+        return $this->hasMany(ProductProperty::class, 'product_id', 'id');
+    }
+
     public static function getMostProduct($count)
     {
         $product = self::limit($count)->order('create_time desc')->select();
@@ -29,5 +39,12 @@ class Product extends BaseModel
     public static function getProductByCategoryId($id)
     {
         return self::where('category_id', $id)->select();
+    }
+
+    public static function getProductDetail($id)
+    {
+        return self::with(['imgs' => function($query){
+            $query->with('imgUrl')->order('order', 'asc');
+        },'properties'])->where('id', $id)->find();
     }
 }

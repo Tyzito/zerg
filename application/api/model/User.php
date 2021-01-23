@@ -12,5 +12,14 @@ namespace app\api\model;
 
 class User extends BaseModel
 {
+    public static function getByOpenid($openid)
+    {
+        $result = self::where('openid', $openid)->find();
 
+        if(!$result){
+            return false;
+        }
+
+        return true;
+    }
 }
