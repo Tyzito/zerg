@@ -10,6 +10,7 @@
 namespace app\api\service;
 
 
+use app\lib\enum\ScopeEnum;
 use app\lib\exception\TokenException;
 use app\lib\exception\WeChatException;
 use think\Exception;
@@ -87,7 +88,11 @@ class UserToken extends Token
     {
         $cacheValue = $wxResult;
         $cacheValue['uid'] = $uid;
-        $cacheValue['scope'] = 16;
+        // scope=16 代表App用户的权限数值
+        $cacheValue['scope'] = ScopeEnum::User;
+
+        // scope=32 代表CMS用户的权限数值
+        //$cacheValue['scope'] = ScopeEnum::Super;
 
         return $cacheValue;
     }
